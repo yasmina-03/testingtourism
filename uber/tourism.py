@@ -58,5 +58,3 @@ if show_heatmap:
     )
     st.plotly_chart(fig_heatmap)
 
-    )
-    st.plotly_chart(fig_heatmap)
