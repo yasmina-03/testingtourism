@@ -16,43 +16,31 @@ if st.checkbox('Show Raw Data'):
 
 # Section to select which visualizations to display
 st.header('Select Visualizations to Display')
-show_pie = st.checkbox('Pie Chart: Cafes Existence Across Regions', value=True)
 show_scatter = st.checkbox('Scatter Plot: Guest Houses vs Hotels', value=True)
+show_heatmap = st.checkbox('Heatmap: Initiatives and Attractions Co-occurrence', value=True)
 
-# Select region from dropdown
-selected_ref_area = st.selectbox('Select Region', data['Ref-area'].unique())
-
-# Filter the data based on the selected region and cafes existence
-filtered_data = data[(data['Existence of cafes - exists'] == 1) & (data['Ref-area'] == selected_ref_area)]
-
-# Pie chart for Cafes Existence
-if show_pie:
-    st.header('Cafes Existence Across Regions')
-    fig_pie = px.pie(filtered_data, names='Ref-area', values='Existence of cafes - exists', title=f'Cafes Existence in {selected_ref_area}')
-    st.plotly_chart(fig_pie)
-
-# Scatter plot for Guest Houses vs Hotels
+# Scatter plot for Guest Houses vs Hotels based on Tourism Index
 if show_scatter:
-    st.header('Preference Between Guest Houses and Hotels Based on Tourism Index')
+    st.header('Preference Between Number of Guest Houses and Hotels Based on Tourism Index')
+    fig = px.scatter(data, 
+                     x='Total number of guest houses', 
+                     y='Total number of hotels', 
+                     color='Tourism Index', 
+                     size='Tourism Index',  
+                     title='Preference Between Guest Houses and Hotels in Ref-areas Based on Tourism Index')
+    st.plotly_chart(fig)
 
-    # Slider for Tourism Index range selection
-    selected_tourism_index = st.slider(
-        'Tourism Index Range', 
-        min_value=int(data['Tourism Index'].min()), 
-        max_value=int(data['Tourism Index'].max()), 
-        value=(int(data['Tourism Index'].min()), int(data['Tourism Index'].max())), 
-        step=1
+# Heatmap for Initiatives and Attractions Co-occurrence
+if show_heatmap:
+    st.header('Heatmap of Initiatives and Attractions Co-occurrence')
+    fig_heatmap = px.density_heatmap(
+        data,
+        x='Existence of initiatives and projects in the past five years to improve the tourism sector - exists',
+        y='Existence of touristic attractions prone to be exploited and developed - exists',
+        title='Heatmap of Initiatives and Attractions Co-occurrence',
+        labels={
+            'Existence of initiatives and projects in the past five years to improve the tourism sector - exists': 'Initiatives Exists',
+            'Existence of touristic attractions prone to be exploited and developed - exists': 'Attractions Prone to Development'
+        }
     )
-
-    # Filter data based on the selected Tourism Index range
-    scatter_data = filtered_data[(filtered_data['Tourism Index'] >= selected_tourism_index[0]) & 
-                                 (filtered_data['Tourism Index'] <= selected_tourism_index[1])]
-
-    fig_scatter = px.scatter(scatter_data, 
-                             x='Total number of guest houses', 
-                             y='Total number of hotels', 
-                             color='Tourism Index', 
-                             size='Tourism Index',  
-                             title=f'Guest Houses vs Hotels in {selected_ref_area} by Tourism Index')
-    st.plotly_chart(fig_scatter)
-
+    st.plotly_chart(fig_heatmap)
