@@ -2,12 +2,12 @@ import streamlit as st
 import pandas as pd 
 import plotly.express as px
 
-file_path = r"tourism.csv"
+file_path = "tourism.csv"
 data = pd.read_csv(file_path)
 
 st.title('Tourism Visuals By Yasmina') 
 
-file_path = r"tourism.csv"
+file_path = "tourism.csv"
 data = pd.read_csv(file_path)
 
 
