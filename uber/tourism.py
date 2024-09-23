@@ -19,23 +19,29 @@ st.header('Select Visualizations to Display')
 show_scatter = st.checkbox('Scatter Plot: Guest Houses vs Hotels', value=True)
 show_heatmap = st.checkbox('Heatmap: Initiatives and Attractions Co-occurrence', value=True)
 
+# Slider for selecting the Tourism Index range
+selected_tourism_index = st.slider(
+    'Tourism Index Range', 
+    min_value=int(data['Tourism Index'].min()), 
+    max_value=int(data['Tourism Index'].max()), 
+    value=(int(data['Tourism Index'].min()), int(data['Tourism Index'].max())), 
+    step=1
+)
+
+# Filter the data based on the selected Tourism Index range
+filtered_data = data[(data['Tourism Index'] >= selected_tourism_index[0]) & 
+                     (data['Tourism Index'] <= selected_tourism_index[1])]
+
 # Scatter plot for Guest Houses vs Hotels based on Tourism Index
 if show_scatter:
     st.header('Preference Between Number of Guest Houses and Hotels Based on Tourism Index')
-    fig = px.scatter(data, 
+    fig = px.scatter(filtered_data, 
                      x='Total number of guest houses', 
                      y='Total number of hotels', 
                      color='Tourism Index', 
                      size='Tourism Index',  
                      title='Preference Between Guest Houses and Hotels in Ref-areas Based on Tourism Index')
     st.plotly_chart(fig)
-    
-    selected_tourism_index = st.slider(
-    'Tourism Index Range', 
-    min_value=int(data['Tourism Index'].min()), 
-    max_value=int(data['Tourism Index'].max()), 
-    value=(int(data['Tourism Index'].min()), int(data['Tourism Index'].max())), 
-    step=1 )
 
 # Heatmap for Initiatives and Attractions Co-occurrence
 if show_heatmap:
@@ -49,5 +55,8 @@ if show_heatmap:
             'Existence of initiatives and projects in the past five years to improve the tourism sector - exists': 'Initiatives Exists',
             'Existence of touristic attractions prone to be exploited and developed - exists': 'Attractions Prone to Development'
         }
+    )
+    st.plotly_chart(fig_heatmap)
+
     )
     st.plotly_chart(fig_heatmap)
