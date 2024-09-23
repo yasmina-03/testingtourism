@@ -29,6 +29,13 @@ if show_scatter:
                      size='Tourism Index',  
                      title='Preference Between Guest Houses and Hotels in Ref-areas Based on Tourism Index')
     st.plotly_chart(fig)
+    
+    selected_tourism_index = st.slider(
+    'Tourism Index Range', 
+    min_value=int(data['Tourism Index'].min()), 
+    max_value=int(data['Tourism Index'].max()), 
+    value=(int(data['Tourism Index'].min()), int(data['Tourism Index'].max())), 
+    step=1 )
 
 # Heatmap for Initiatives and Attractions Co-occurrence
 if show_heatmap:
