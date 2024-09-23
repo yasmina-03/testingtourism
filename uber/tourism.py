@@ -19,22 +19,22 @@ st.header('Select Visualizations to Display')
 show_scatter = st.checkbox('Scatter Plot: Guest Houses vs Hotels', value=True)
 show_heatmap = st.checkbox('Heatmap: Initiatives and Attractions Co-occurrence', value=True)
 
-# Slider for selecting the Tourism Index range
-selected_tourism_index = st.slider(
-    'Tourism Index Range', 
-    min_value=int(data['Tourism Index'].min()), 
-    max_value=int(data['Tourism Index'].max()), 
-    value=(int(data['Tourism Index'].min()), int(data['Tourism Index'].max())), 
-    step=1
-)
-
-# Filter the data based on the selected Tourism Index range
-filtered_data = data[(data['Tourism Index'] >= selected_tourism_index[0]) & 
-                     (data['Tourism Index'] <= selected_tourism_index[1])]
-
 # Scatter plot for Guest Houses vs Hotels based on Tourism Index
 if show_scatter:
     st.header('Preference Between Number of Guest Houses and Hotels Based on Tourism Index')
+    
+    # Filter the data based on the selected Tourism Index range
+    selected_tourism_index = st.slider(
+        'Tourism Index Range', 
+        min_value=int(data['Tourism Index'].min()), 
+        max_value=int(data['Tourism Index'].max()), 
+        value=(int(data['Tourism Index'].min()), int(data['Tourism Index'].max())), 
+        step=1
+    )
+    
+    filtered_data = data[(data['Tourism Index'] >= selected_tourism_index[0]) & 
+                         (data['Tourism Index'] <= selected_tourism_index[1])]
+    
     fig = px.scatter(filtered_data, 
                      x='Total number of guest houses', 
                      y='Total number of hotels', 
