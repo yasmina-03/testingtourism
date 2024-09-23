@@ -2,12 +2,12 @@ import streamlit as st
 import pandas as pd 
 import plotly.express as px
 
-file_path = "tourism.csv"
+file_path = "https://linked.aub.edu.lb/pkgcube/data/551015b5649368dd2612f795c2a9c2d8_20240902_115953.csv"
 data = pd.read_csv(file_path)
 
 st.title('Tourism Visuals By Yasmina') 
 
-file_path = "tourism.csv"
+file_path = "https://linked.aub.edu.lb/pkgcube/data/551015b5649368dd2612f795c2a9c2d8_20240902_115953.csv"
 data = pd.read_csv(file_path)
 
 
